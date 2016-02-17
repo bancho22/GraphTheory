@@ -79,7 +79,7 @@ public class Modified_A_Star {
         return shortestPath;
     }
     
-    public void calculateHeuristics(Grid grid, Tile goal){
+    private void calculateHeuristics(Grid grid, Tile goal){
         int goal_x = goal.getCoords().getX();
         int goal_y = goal.getCoords().getY();
         int curr_x;

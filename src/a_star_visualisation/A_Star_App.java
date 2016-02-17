@@ -78,7 +78,6 @@ public class A_Star_App implements App2D, KeyboardListener {
         showShortestPath = false;
         
         a_star = new Modified_A_Star();
-        a_star.calculateHeuristics(grid, endTile);
         shortestPath = (ArrayList<Tile>) a_star.solve(grid, startTile, endTile);
         
 //        for (Tile tile : shortestPath) {
