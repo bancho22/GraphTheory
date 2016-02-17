@@ -47,7 +47,7 @@ public class A_Star_App implements App2D, KeyboardListener {
 
     @Override
     public boolean showMouseCursor() {
-        return true;
+        return false;
     }
 
     @Override
