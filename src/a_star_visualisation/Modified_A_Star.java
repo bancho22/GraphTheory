@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
  *
  * @author Bancho
  * It's modified as in it contains additional class attributes which are used only for the visualization.
- * Another difference is that the algorithm stops if the realizes that the tile it's looking at (testedTile) is the goal tile,
+ * Another difference is that the algorithm stops if it realizes that the tile it's looking at (testedTile) is the goal tile,
  * instead of waiting for it to become the current one (currentTile).
  */
 public class Modified_A_Star {
