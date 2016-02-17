@@ -5,7 +5,6 @@
  */
 package a_star_visualisation;
 
-import a_star.Coords;
 import a_star.Grid;
 import a_star.Tile;
 import app2dapi.App2D;
@@ -21,8 +20,7 @@ import app2dapi.input.keyboard.KeyboardListener;
 import app2dpcimpl.PCPlatformImpl;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
