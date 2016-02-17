@@ -19,7 +19,6 @@ import app2dapi.input.keyboard.KeyReleasedEvent;
 import app2dapi.input.keyboard.KeyboardListener;
 import app2dpcimpl.PCPlatformImpl;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 
 /**
@@ -62,9 +61,10 @@ public class A_Star_App implements App2D, KeyboardListener {
         grid.getTileByCoords(7, 3).setBlocked(true);
         grid.getTileByCoords(6, 4).setBlocked(true);
         grid.getTileByCoords(5, 5).setBlocked(true);
-        grid.getTileByCoords(4, 6).setBlocked(true);
+        //grid.getTileByCoords(4, 6).setBlocked(true);
         grid.getTileByCoords(3, 7).setBlocked(true);
         grid.getTileByCoords(2, 8).setBlocked(true);
+        grid.getTileByCoords(1, 9).setBlocked(true);
         
         startTile = grid.getTileByCoords(1, 2);
         endTile = grid.getTileByCoords(7, 8);
@@ -133,7 +133,7 @@ public class A_Star_App implements App2D, KeyboardListener {
     @Override
     public void onKeyPressed(KeyPressedEvent e) {
         if (e.getKey().equals(Key.VK_SPACE)) {
-            //sth
+            a_star.startVisualisation();
         }
     }
 

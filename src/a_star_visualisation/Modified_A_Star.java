@@ -29,6 +29,7 @@ public class Modified_A_Star {
     private double timeElapsedSinceAnimationStart;
     private int revealedTestedTilesCounter;
     private boolean revealShortestPath;
+    private boolean visualisationStarted;
 
     public Modified_A_Star() {
         this.testedTiles = new ArrayList<>();
@@ -104,7 +105,7 @@ public class Modified_A_Star {
     
     public void update(double time){
         if (revealedTestedTilesCounter < testedTiles.size()) {
-            if (time > timeElapsedSinceAnimationStart + 0.3) {
+            if (time > timeElapsedSinceAnimationStart + 0.3 && visualisationStarted) {
                 revealedTestedTilesCounter++;
                 timeElapsedSinceAnimationStart = time;
             }
@@ -120,4 +121,9 @@ public class Modified_A_Star {
     public boolean revealShortestPath(){
         return revealShortestPath;
     }
+
+    public void startVisualisation() {
+        visualisationStarted = true;
+    }
+
 }

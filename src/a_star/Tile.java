@@ -117,6 +117,12 @@ public class Tile implements Observer, Comparable<Tile> {
         if(this.getFValue() < o.getFValue()){
             return -1;
         }
+        if (this.getHValue() > o.getHValue()) {
+            return 1;
+        }
+        if(this.getHValue() < o.getHValue()){
+            return -1;
+        }
         return 0;
     }
 
