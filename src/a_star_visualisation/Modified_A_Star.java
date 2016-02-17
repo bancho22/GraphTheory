@@ -10,22 +10,31 @@ import a_star.Tile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
  *
  * @author Bancho
- * It's modified as in it has an additional ArrayList that stores all the tested tiles which is used only for the visualization.
+ * It's modified as in it contains additional class attributes which are used only for the visualization.
  * Another difference is that the algorithm stops if the realizes that the tile it's looking at (testedTile) is the goal tile,
  * instead of waiting for it to become the current one (currentTile).
  */
 public class Modified_A_Star {
     
     private final int COST_PER_MOVEMENT = 10;
+    
+    //visualisation attributes
     private final ArrayList<Tile> testedTiles;
+    private double timeElapsedSinceAnimationStart;
+    private int revealedTestedTilesCounter;
+    private boolean revealShortestPath;
 
     public Modified_A_Star() {
         this.testedTiles = new ArrayList<>();
+        this.timeElapsedSinceAnimationStart = 0.0;
+        this.revealedTestedTilesCounter = 0;
+        this.revealShortestPath = false;
     }
     
     
@@ -92,8 +101,23 @@ public class Modified_A_Star {
             }
         }
     }
-
-    public ArrayList<Tile> getTestedTiles() {
-        return testedTiles;
+    
+    public void update(double time){
+        if (revealedTestedTilesCounter < testedTiles.size()) {
+            if (time > timeElapsedSinceAnimationStart + 0.3) {
+                revealedTestedTilesCounter++;
+                timeElapsedSinceAnimationStart = time;
+            }
+        }else{
+            revealShortestPath = true;
+        }
+    }
+    
+    public List<Tile> getRevealedTestedTiles(){
+        return testedTiles.subList(0, revealedTestedTilesCounter);
+    }
+    
+    public boolean revealShortestPath(){
+        return revealShortestPath;
     }
 }

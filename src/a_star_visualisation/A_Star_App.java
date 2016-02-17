@@ -37,12 +37,8 @@ public class A_Star_App implements App2D, KeyboardListener {
     private int tileWidth;
     private Tile startTile;
     private Tile endTile;
-    private HashSet<Tile> testedTiles;
-    private double timeElapsed;
-    private int counter;
     private Modified_A_Star a_star;
     private ArrayList<Tile> shortestPath;
-    private boolean showShortestPath;
 
 
     @Override
@@ -72,10 +68,6 @@ public class A_Star_App implements App2D, KeyboardListener {
         
         startTile = grid.getTileByCoords(1, 2);
         endTile = grid.getTileByCoords(7, 8);
-        testedTiles = new HashSet<Tile>();
-        timeElapsed = 0.0;
-        counter = 0;
-        showShortestPath = false;
         
         a_star = new Modified_A_Star();
         shortestPath = (ArrayList<Tile>) a_star.solve(grid, startTile, endTile);
@@ -89,14 +81,7 @@ public class A_Star_App implements App2D, KeyboardListener {
 
     @Override
     public boolean update(double time) {
-        if (counter < a_star.getTestedTiles().size()) { //algorithm should be done in 3 secs
-            if (time > timeElapsed + 0.3 && time > 3) {
-                testedTiles.add(a_star.getTestedTiles().get(counter++));
-                timeElapsed = time;
-            }
-        }else{
-            showShortestPath = true;
-        }
+        a_star.update(time);
         return true;
     }
 
@@ -120,9 +105,9 @@ public class A_Star_App implements App2D, KeyboardListener {
                     canvas.setColor(cf.getRed());
                 }else if(tile.equals(startTile) || tile.equals(endTile)){
                     canvas.setColor(cf.getBlue());
-                }else if(testedTiles.contains(tile) && showShortestPath == false){
+                }else if(a_star.getRevealedTestedTiles().contains(tile) && a_star.revealShortestPath() == false){
                     canvas.setColor(cf.getYellow());
-                }else if(shortestPath.contains(tile) && showShortestPath){
+                }else if(shortestPath.contains(tile) && a_star.revealShortestPath()){
                     canvas.setColor(cf.getWhite());
                 }else{
                     canvas.setColor(cf.getGreen());
@@ -138,15 +123,6 @@ public class A_Star_App implements App2D, KeyboardListener {
             yLocBoundB -= tileHeight;
         }
 
-//        System.out.println(yLocBoundA+" "+yLocBoundB);
-//        System.out.println(-screenHeight/2 + "");
-//        canvas.drawPoint(g2d.newPoint2D(xLocBoundA + 5, yLocBoundA - 5), 2);
-//        canvas.drawPoint(g2d.newPoint2D(xLocBoundB - 5, yLocBoundB + 5), 2);
-
-//        String text = "opa";
-//        double textHeight = 50;
-//        double textWidth = canvas.getTextWidth(text, textHeight);
-//        canvas.drawText(g2d.newPoint2D(0 - textWidth/2, 0 - textHeight/2), text, textHeight);
     }
 
     @Override
