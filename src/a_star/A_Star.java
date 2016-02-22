@@ -9,8 +9,10 @@ import static a_star.Colors.ANSI_PURPLE;
 import static a_star.Colors.ANSI_RED;
 import static a_star.Colors.ANSI_RESET;
 import static a_star.Colors.ANSI_YELLOW;
+import heap.Heap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
@@ -25,7 +27,7 @@ public class A_Star {
     public Iterable<Tile> solve(Grid grid, Tile start, Tile goal){
         calculateHeuristics(grid, goal);
         
-        PriorityQueue<Tile> openList = new PriorityQueue<Tile>();
+        Heap<Tile> openList = new Heap<Tile>(Comparator.naturalOrder());
         HashSet<Tile> closedList = new HashSet<Tile>();
         
         boolean reachedGoal = false;
@@ -38,8 +40,7 @@ public class A_Star {
                         if (newGValue < testedTile.getGValue()) {
                             testedTile.setGValue(newGValue);
                             testedTile.setParentTile(currentTile);
-                            openList.remove(testedTile);
-                            openList.add(testedTile);
+                            openList.update(testedTile);
                         }
                     }else{
                         testedTile.setGValue(currentTile.getGValue() + COST_PER_MOVEMENT);
@@ -56,22 +57,22 @@ public class A_Star {
         } while (reachedGoal == false);
         
         //---------------------printing start----------------------------------
-        for (int y = 0; y < grid.getHeight(); y++) {
-            for (int x = 0; x < grid.getWidth(); x++) {
-                    if (grid.getTileByCoords(x, y) == start) {
-                        System.out.print(ANSI_YELLOW + "S " + ANSI_RESET);
-                    }else if(grid.getTileByCoords(x, y) == goal){
-                        System.out.print(ANSI_YELLOW + "G " + ANSI_RESET);
-                    }else if(closedList.contains(grid.getTileByCoords(x, y))){
-                        System.out.print(ANSI_PURPLE + "T " + ANSI_RESET);
-                    }else if(grid.getTileByCoords(x, y).isBlocked()){
-                        System.out.print(ANSI_RED + "B " + ANSI_RESET);
-                    }else{
-                        System.out.print("X ");
-                    }
-            }
-            System.out.println("");
-        }
+//        for (int y = 0; y < grid.getHeight(); y++) {
+//            for (int x = 0; x < grid.getWidth(); x++) {
+//                    if (grid.getTileByCoords(x, y) == start) {
+//                        System.out.print(ANSI_YELLOW + "S " + ANSI_RESET);
+//                    }else if(grid.getTileByCoords(x, y) == goal){
+//                        System.out.print(ANSI_YELLOW + "G " + ANSI_RESET);
+//                    }else if(closedList.contains(grid.getTileByCoords(x, y))){
+//                        System.out.print(ANSI_PURPLE + "T " + ANSI_RESET);
+//                    }else if(grid.getTileByCoords(x, y).isBlocked()){
+//                        System.out.print(ANSI_RED + "B " + ANSI_RESET);
+//                    }else{
+//                        System.out.print("X ");
+//                    }
+//            }
+//            System.out.println("");
+//        }
         //---------------------printing end----------------------------------
         
         ArrayList<Tile> shortestPath = new ArrayList<Tile>();

@@ -23,7 +23,7 @@ public class Tile implements Observer, Comparable<Tile> {
     private Tile parentTile;
     private ArrayList<Tile> neighbouringTiles;
 
-    public Tile(Grid grid, Coords coords) {
+    protected Tile(Grid grid, Coords coords) {
         this.grid = grid;
         this.coords = coords;
         hValue = 0;
