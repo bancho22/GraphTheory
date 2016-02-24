@@ -27,9 +27,9 @@ public class Runner {
 //        grid.getTileByCoords(2, 3).setBlocked(true);
 //        grid.getTileByCoords(1, 3).setBlocked(true);
         
-        Grid grid = new Grid(500, 500);
+        Grid grid = new Grid(250, 250);
         Tile start = grid.getTileByCoords(5, 12);
-        Tile goal = grid.getTileByCoords(438, 478);
+        Tile goal = grid.getTileByCoords(238, 248);
         
         A_Star astarAlgo = new A_Star();
         Iterable<Tile> solution = astarAlgo.solve(grid, start, goal);

@@ -27,6 +27,7 @@ public class A_Star {
     public Iterable<Tile> solve(Grid grid, Tile start, Tile goal){
         calculateHeuristics(grid, goal);
         
+        //PriorityQueue<Tile> openList = new PriorityQueue<Tile>();
         Heap<Tile> openList = new Heap<Tile>(Comparator.naturalOrder());
         HashSet<Tile> closedList = new HashSet<Tile>();
         
@@ -41,6 +42,8 @@ public class A_Star {
                             testedTile.setGValue(newGValue);
                             testedTile.setParentTile(currentTile);
                             openList.update(testedTile);
+                            //openList.remove(testedTile);
+                            //openList.add(testedTile);
                         }
                     }else{
                         testedTile.setGValue(currentTile.getGValue() + COST_PER_MOVEMENT);
