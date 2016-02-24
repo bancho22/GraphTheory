@@ -22,7 +22,8 @@ import java.util.PriorityQueue;
  */
 public class A_Star {
     
-    private final int COST_PER_MOVEMENT = 10;
+    private final int COST_PER_ONE_AXIS_MOVEMENT = 10;
+    private final int COST_PER_DIAGONAL_MOVEMENT = 14;
     
     public Iterable<Tile> solve(Grid grid, Tile start, Tile goal){
         calculateHeuristics(grid, goal);
@@ -36,8 +37,19 @@ public class A_Star {
         do {
             for (Tile testedTile : currentTile.getNeighbouringTiles()) {
                 if (testedTile.isBlocked() == false && closedList.contains(testedTile) == false) {
+                    boolean isTestedTileDiagonal = false;
+                    if (grid.isDiagonalMovementEnabled()) {
+                        isTestedTileDiagonal = testedTile.getCoords().getX() != currentTile.getCoords().getX() &&
+                                    testedTile.getCoords().getY() != currentTile.getCoords().getY();
+                    }
                     if (openList.contains(testedTile)) {
-                        int newGValue = currentTile.getGValue() + COST_PER_MOVEMENT;
+                        int newGValue;
+                        if (isTestedTileDiagonal) {
+                            newGValue = currentTile.getGValue() + COST_PER_DIAGONAL_MOVEMENT;
+                        }
+                        else{
+                            newGValue = currentTile.getGValue() + COST_PER_ONE_AXIS_MOVEMENT;
+                        }
                         if (newGValue < testedTile.getGValue()) {
                             testedTile.setGValue(newGValue);
                             testedTile.setParentTile(currentTile);
@@ -46,7 +58,12 @@ public class A_Star {
                             //openList.add(testedTile);
                         }
                     }else{
-                        testedTile.setGValue(currentTile.getGValue() + COST_PER_MOVEMENT);
+                        if (isTestedTileDiagonal) {
+                            testedTile.setGValue(currentTile.getGValue() + COST_PER_DIAGONAL_MOVEMENT);
+                        }
+                        else{
+                            testedTile.setGValue(currentTile.getGValue() + COST_PER_ONE_AXIS_MOVEMENT);
+                        }
                         testedTile.setParentTile(currentTile);
                         openList.add(testedTile);
                     }
@@ -58,7 +75,7 @@ public class A_Star {
                 reachedGoal = true;
             }
         } while (reachedGoal == false);
-        
+
         //---------------------printing start----------------------------------
 //        for (int y = 0; y < grid.getHeight(); y++) {
 //            for (int x = 0; x < grid.getWidth(); x++) {
@@ -97,7 +114,7 @@ public class A_Star {
             if (tile.isBlocked() == false) {
                 curr_x = tile.getCoords().getX();
                 curr_y = tile.getCoords().getY();
-                tile.setHValue((Math.abs(goal_x - curr_x) + Math.abs(goal_y - curr_y)) * 10);
+                tile.setHValue((Math.abs(goal_x - curr_x) + Math.abs(goal_y - curr_y)) * COST_PER_ONE_AXIS_MOVEMENT);
             }
         }
     }

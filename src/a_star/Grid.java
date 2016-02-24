@@ -18,11 +18,13 @@ public class Grid extends Observable {
     
     private final int width; //x axis
     private final int height; //y axis
+    private final boolean diagonalMovementEnabled;
     private final HashMap<String, Tile> tiles; //key has following format: "(x,y)"
     
-    public Grid(int width, int height){
+    public Grid(int width, int height, boolean diagonalMovementEnabled){
         this.width = width;
         this.height = height;
+        this.diagonalMovementEnabled = diagonalMovementEnabled;
         tiles = new HashMap<>();
         initTiles();
     }
@@ -57,6 +59,10 @@ public class Grid extends Observable {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isDiagonalMovementEnabled() {
+        return diagonalMovementEnabled;
     }
 
 }

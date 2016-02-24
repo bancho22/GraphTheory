@@ -14,7 +14,7 @@ import java.util.Observer;
  * @author Bancho
  */
 public class Tile implements Observer, Comparable<Tile> {
-    
+
     private final Grid grid; //owning grid
     private final Coords coords;
     private int hValue; //heuristic value
@@ -31,7 +31,7 @@ public class Tile implements Observer, Comparable<Tile> {
         isBlocked = false;
         parentTile = null;
         neighbouringTiles = new ArrayList<>();
-        
+
         grid.addObserver(this);
     }
 
@@ -80,7 +80,7 @@ public class Tile implements Observer, Comparable<Tile> {
         this.parentTile = parent;
     }
 
-    public Iterable<Tile> getNeighbouringTiles(){
+    public ArrayList<Tile> getNeighbouringTiles(){
         return neighbouringTiles;
     }
     
@@ -106,6 +106,25 @@ public class Tile implements Observer, Comparable<Tile> {
         Tile west = grid.getTileByCoords(coords.getX() - 1, coords.getY());
         if (west != null) {
             neighbouringTiles.add(west);
+        }
+
+        if (grid.isDiagonalMovementEnabled()) {
+            Tile northeast = grid.getTileByCoords(coords.getX() + 1, coords.getY() - 1);
+            if (northeast != null) {
+                neighbouringTiles.add(northeast);
+            }
+            Tile southeast = grid.getTileByCoords(coords.getX() + 1, coords.getY() + 1);
+            if (southeast != null) {
+                neighbouringTiles.add(southeast);
+            }
+            Tile southwest = grid.getTileByCoords(coords.getX() - 1, coords.getY() + 1);
+            if (southwest != null) {
+                neighbouringTiles.add(southwest);
+            }
+            Tile northwest = grid.getTileByCoords(coords.getX() - 1, coords.getY() - 1);
+            if (northwest != null) {
+                neighbouringTiles.add(northwest);
+            }
         }
     }
 

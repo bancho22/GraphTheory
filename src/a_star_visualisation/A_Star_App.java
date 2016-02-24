@@ -53,7 +53,7 @@ public class A_Star_App implements App2D, KeyboardListener {
         screenHeight = device.getScreen().getPixelHeight();
         screenWidth = device.getScreen().getPixelWidth();
         
-        grid = new Grid(10, 10);
+        grid = new Grid(10, 10, true);
         tileHeight = screenHeight / grid.getHeight();
         tileWidth = screenWidth / grid.getWidth();
         
