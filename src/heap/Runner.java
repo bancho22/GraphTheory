@@ -6,6 +6,7 @@
 package heap;
 
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  *

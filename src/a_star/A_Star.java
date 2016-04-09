@@ -22,8 +22,11 @@ import java.util.PriorityQueue;
  */
 public class A_Star {
     
-    private final int COST_PER_ONE_AXIS_MOVEMENT = 10;
+    //private final int COST_PER_ONE_AXIS_MOVEMENT = 10;
     private final int COST_PER_DIAGONAL_MOVEMENT = 14;
+    private final int COST_PER_FORWARD_MOVEMENT = 10;
+    private final int COST_PER_BACKWARDS_MOVEMENT = 13;
+    private final int COST_PER_SIDE_MOVEMENT = 16;
     
     public Iterable<Tile> solve(Grid grid, Tile start, Tile goal){
         calculateHeuristics(grid, goal);
@@ -48,11 +51,25 @@ public class A_Star {
                             newGValue = currentTile.getGValue() + COST_PER_DIAGONAL_MOVEMENT;
                         }
                         else{
-                            newGValue = currentTile.getGValue() + COST_PER_ONE_AXIS_MOVEMENT;
+                            switch(currentTile.getMovementRequiredToNeighbour(testedTile)){
+                                case "f": //forward movement is required
+                                    newGValue = currentTile.getGValue() + COST_PER_FORWARD_MOVEMENT;
+                                    break;
+                                case "b": //backwards movement is required
+                                    newGValue = currentTile.getGValue() + COST_PER_BACKWARDS_MOVEMENT;
+                                    break;
+                                case "s": //side movement is required
+                                    newGValue = currentTile.getGValue() + COST_PER_SIDE_MOVEMENT;
+                                    break;
+                                default:
+                                    newGValue = Integer.MAX_VALUE; //otherwise compiler complains
+                                    break;
+                            }
                         }
                         if (newGValue < testedTile.getGValue()) {
                             testedTile.setGValue(newGValue);
                             testedTile.setParentTile(currentTile);
+                            testedTile.calcOwnDirBasedOnParent();
                             openList.update(testedTile);
                             //openList.remove(testedTile);
                             //openList.add(testedTile);
@@ -62,15 +79,34 @@ public class A_Star {
                             testedTile.setGValue(currentTile.getGValue() + COST_PER_DIAGONAL_MOVEMENT);
                         }
                         else{
-                            testedTile.setGValue(currentTile.getGValue() + COST_PER_ONE_AXIS_MOVEMENT);
+                            int gValue;
+                            switch(currentTile.getMovementRequiredToNeighbour(testedTile)){
+                                case "f": //forward movement is required
+                                    gValue = currentTile.getGValue() + COST_PER_FORWARD_MOVEMENT;
+                                    break;
+                                case "b": //backwards movement is required
+                                    gValue = currentTile.getGValue() + COST_PER_BACKWARDS_MOVEMENT;
+                                    break;
+                                case "s": //side movement is required
+                                    gValue = currentTile.getGValue() + COST_PER_SIDE_MOVEMENT;
+                                    break;
+                                default:
+                                    gValue = Integer.MAX_VALUE; //otherwise compiler complains
+                                    break;
+                            }
+                            testedTile.setGValue(gValue);
                         }
                         testedTile.setParentTile(currentTile);
+                        testedTile.calcOwnDirBasedOnParent();
                         openList.add(testedTile);
                     }
                 }
             }
             closedList.add(currentTile);
             currentTile = openList.poll();
+            if (currentTile == null) {
+                break;
+            }
             if (currentTile.equals(goal)) {
                 reachedGoal = true;
             }
@@ -99,7 +135,12 @@ public class A_Star {
         currentTile = goal;
         while(currentTile != start){
             shortestPath.add(currentTile);
-            currentTile = currentTile.getParentTile();
+            Tile parent = currentTile.getParentTile();
+            if (parent != null) {
+                currentTile = currentTile.getParentTile();
+            }else{
+                break;
+            }
         }
         Collections.reverse(shortestPath);
         return shortestPath;
@@ -114,7 +155,7 @@ public class A_Star {
             if (tile.isBlocked() == false) {
                 curr_x = tile.getCoords().getX();
                 curr_y = tile.getCoords().getY();
-                tile.setHValue((Math.abs(goal_x - curr_x) + Math.abs(goal_y - curr_y)) * COST_PER_ONE_AXIS_MOVEMENT);
+                tile.setHValue((Math.abs(goal_x - curr_x) + Math.abs(goal_y - curr_y)) * COST_PER_FORWARD_MOVEMENT);
             }
         }
     }

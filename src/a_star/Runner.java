@@ -27,14 +27,19 @@ public class Runner {
 //        grid.getTileByCoords(2, 3).setBlocked(true);
 //        grid.getTileByCoords(1, 3).setBlocked(true);
         
-        Grid grid = new Grid(20, 20, true);
-        Tile start = grid.getTileByCoords(3, 3);
-        Tile goal = grid.getTileByCoords(18, 18);
+        Grid grid = new Grid(20, 20, false);
+        Tile start = grid.getTileByCoords(0, 0);
+        start.setDirection(0);
+        Tile goal = grid.getTileByCoords(0, 0);
+        
+        grid.getTileByCoords(0, 1).setBlocked(true);
+        grid.getTileByCoords(1, 1).setBlocked(true);
+        grid.getTileByCoords(1, 0).setBlocked(true);
         
         A_Star astarAlgo = new A_Star();
         Iterable<Tile> solution = astarAlgo.solve(grid, start, goal);
         for (Tile tile : solution) {
-            System.out.println(Coords.stringify(tile.getCoords().getX(), tile.getCoords().getY()));
+            System.out.println(Coords.stringify(tile.getCoords().getX(), tile.getCoords().getY()) + " /dir: " + tile.getDirection());
         }
         
         
@@ -43,7 +48,7 @@ public class Runner {
         for (Tile tile : solution) {
             path.add(tile);
         }
-        for (int y = 0; y < grid.getHeight(); y++) {
+        for (int y = grid.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < grid.getWidth(); x++) {
                     if (grid.getTileByCoords(x, y) == start) {
                         System.out.print(ANSI_YELLOW + "S " + ANSI_RESET);
